@@ -79,3 +79,7 @@ int Network::getHeight(){
 int Network::getWidth(){
   return width;
 }
+
+int writePositions(int pos[], ofstream file){
+	
+	
