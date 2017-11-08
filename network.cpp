@@ -34,11 +34,12 @@ void Network::populate(){
     //add neuron an durch vector gegebener stelle
   }
 }//end populateWithDna
+*/
 
-void Network::extractDnaToFile(){
+int[] Network::extractNeurons(){
+  //iterate through vector and return an array containing all positions where a neuron is stored
   
 }//end extractDnaToFile
-*/
 
 void Network::connectNeurons(Neuron* n){
   int r = n->getRadius();
