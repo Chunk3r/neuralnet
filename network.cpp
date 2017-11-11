@@ -82,21 +82,31 @@ int Network::getWidth(){
 
 //write the positions of neurons into a file
 //format: x.y.z
-int writePositions(int pos[][], char name[]){
-  std::ofstream file = (name, std::ofstream::out);
-  for(int i = 0; i < pos.size(); i++){
-    file << pos[i][0] + "." + pos[i][1] + "." + pos[i][2] + "\n";
+int writePositions(int **pos, char *name){
+  FILE *output = fopen(name, "w");
+  if(output != NULL){
+    for(int i = 0; i < pos.size(); i++){
+      fprintf(output, "%i.%i.%i\n", pos[i][0], pos[i][1], pos[i][2]);
+    }
+    fclose(output);
+    return 0;//add exceptionhandling
   }
-  file.close();
-  return 0;//add exceptionhandling
 }//end writePositions
 
 //read positions from a file
 //format: x.y.z
-int[][] readPositions(char name[]){
+int[][] readPositions(char *name){
   int[1000000000][3] positions;//TODO- make it dynamic to save resources
-  std::ifstream file = (name, std::ifstream::in);
-  while(file != eof){
-    positions[count][]
+  FILE *input = fopen(name, "r");
+  if(input != NULL){
+    int count = 0;
+    while(input != EOF){
+      std::fscanf("%i.%i.%i\n", positions[count][0], positions[count][1], positions[count][2]);
+      count++;
+    }
+    fclose(input);
+    return 0;
   }
-}
+  else
+    return -1;
+}//end readPositions
