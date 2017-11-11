@@ -6,6 +6,7 @@
 #include "neuron.hpp"
 #include <vector>
 #include <cstdio>
+#include <iostream>
 #include <cstdlib>
 
 class Network{
