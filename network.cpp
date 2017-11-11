@@ -36,10 +36,21 @@ void Network::populate(){
 }//end populateWithDna
 */
 
-int[] Network::extractNeurons(){
-  //iterate through vector and return an array containing all positions where a neuron is stored
+//iterate through vector and return an array containing all positions where a neuron is stored
+char[][] Network::extractNeurons(){
+  char[997002999][13] pos;//TODO-calc required size //999.999.999\n\0
+  int count = 0;
+  for(int x = 0; x < length; x++){
+    for(int y = 0; y < height; y++){
+      for(int z = 0; z < width; z++){
+	if(v[x][y][z] != NULL){
+	  pos[count] = "%3i.%3i.%3i\n" + x + y + z;
+	}
+      }
+    }
+  }
   
-}//end extractDnaToFile
+}//end extractNeurons
 
 void Network::connectNeurons(Neuron* n){
   int r = n->getRadius();
@@ -53,7 +64,7 @@ void Network::connectNeurons(Neuron* n){
 	  }
 	  else{
 	    std::printf("add Neighbor\n");
-	    n->addNeighbor(&v[i][j][k]);//TODO
+	    n->addNeighbor(&v[i][j][k]);//TODO?
 	  }
 	}
       }
