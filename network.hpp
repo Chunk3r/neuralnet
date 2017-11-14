@@ -16,7 +16,6 @@ public:
   void populate();
   void push_back(std::vector<std::vector<std::vector<Neuron>>>* vp, Neuron n);
   //void populateWithDna(File* input);
-  int[][] extractNeurons();
   void connectNeurons(Neuron* n);
   Neuron* getNeuron(int x, int y, int z);
   int getLength();
@@ -30,6 +29,7 @@ private:
   int height;
   int width;
   std::vector<std::vector<std::vector<Neuron>>> v;
+  int[][] extractNeurons();
 
 };
 
