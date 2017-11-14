@@ -22,6 +22,8 @@ public:
   int getLength();
   int getHeight();
   int getWidth();
+  void save(char* fileName);
+  void load(char* fileName);
 
 private:
   int isInBounds(int i, int j, int k);
@@ -30,6 +32,8 @@ private:
   int height;
   int width;
   std::vector<std::vector<std::vector<Neuron>>> v;
+  int** readPositions(char* fileName);
+  int writePositions(int** pos, char* fileName);
 
 };
 
