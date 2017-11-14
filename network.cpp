@@ -91,6 +91,8 @@ int writePositions(int **pos, char *name){
     fclose(output);
     return 0;//add exceptionhandling
   }
+  else
+    return -1;
 }//end writePositions
 
 //read positions from a file
