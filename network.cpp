@@ -34,11 +34,27 @@ void Network::populate(){
     //add neuron an durch vector gegebener stelle
   }
 }//end populateWithDna
-
-void Network::extractDnaToFile(){
-  
-}//end extractDnaToFile
 */
+
+//iterate through vector and return an array containing
+//all positions where a neuron is stored
+int[][] Network::extractNeurons(){
+  int[(length*height*width)][3] pos;//required size is calculated
+  int count = 0;
+  for(int x = 0; x < length; x++){
+    for(int y = 0; y < height; y++){
+      for(int z = 0; z < width; z++){
+	if(v[x][y][z] != NULL){
+	  pos[count][0] = x;
+	  pos[count][1] = y;
+	  pos[count][2] = z;
+	  count++;
+	}
+      }
+    }
+  }
+  return pos;
+}//end extractNeurons
 
 void Network::connectNeurons(Neuron* n){
   int r = n->getRadius();
@@ -46,13 +62,10 @@ void Network::connectNeurons(Neuron* n){
   for(int i = (n->xPos() - r); i <= (n->xPos() + r); i++){
     for(int j = (n->yPos() - r); j <= (n->yPos() + r); j++){
       for(int k = (n->zPos() - r); k <= (n->zPos() + r); k++){
-	if(isInBounds(i, j, k) == 1){
-	  if(i == n->xPos() && j == n->yPos() && k == n->zPos()){
-	    
-	  }
-	  else{
+	if(isInBounds(i, j, k) == 1 && &v[i][j][k] != NULL){
+	  if(i != n->xPos() || j != n->yPos() || k != n->zPos()){
 	    std::printf("add Neighbor\n");
-	    n->addNeighbor(&v[i][j][k]);//TODO
+	    n->addNeighbor(&v[i][j][k]);
 	  }
 	}
       }
