@@ -79,3 +79,36 @@ int Network::getHeight(){
 int Network::getWidth(){
   return width;
 }
+
+//write the positions of neurons into a file
+//format: x.y.z
+int writePositions(int **pos, char *name){
+  FILE *output = fopen(name, "w");
+  if(output != NULL){
+    for(int i = 0; i < pos.size(); i++){
+      fprintf(output, "%i.%i.%i\n", pos[i][0], pos[i][1], pos[i][2]);
+    }
+    fclose(output);
+    return 0;//add exceptionhandling
+  }
+  else
+    return -1;
+}//end writePositions
+
+//read positions from a file
+//format: x.y.z
+int[][] readPositions(char *name){
+  int[1000000000][3] positions;//TODO- make it dynamic to save resources
+  FILE *input = fopen(name, "r");
+  if(input != NULL){
+    int count = 0;
+    while(input != EOF){
+      std::fscanf("%i.%i.%i\n", positions[count][0], positions[count][1], positions[count][2]);
+      count++;
+    }
+    fclose(input);
+    return 0;
+  }
+  else
+    return -1;
+}//end readPositions
