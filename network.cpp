@@ -107,7 +107,7 @@ int[][] readPositions(char *name){
       count++;
     }
     fclose(input);
-    return 0;
+    return positions;
   }
   else
     return -1;
