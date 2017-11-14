@@ -7,6 +7,7 @@
 #include <vector>
 #include <array>
 #include <cstdio>
+#include <iostream>
 #include <cstdlib>
 
 class Network{
@@ -21,6 +22,8 @@ public:
   int getLength();
   int getHeight();
   int getWidth();
+  void save(char* fileName);
+  void load(char* fileName);
 
 private:
   int isInBounds(int i, int j, int k);
@@ -30,6 +33,8 @@ private:
   int width;
   std::vector<std::vector<std::vector<Neuron>>> v;
   int[][] extractNeurons();
+  int** readPositions(char* fileName);
+  int writePositions(int** pos, char* fileName);
 
 };
 
