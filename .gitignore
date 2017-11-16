@@ -1,3 +1,4 @@
 *.o
 brain
 *.net
+*.gch
