@@ -38,7 +38,7 @@ void Network::populate(){
 
 //iterate through vector and return an array containing
 //all positions where a neuron is stored
-int[][] Network::extractNeurons(){
+int** Network::extractNeurons(){
   int[(length*height*width)][3] pos;//required size is calculated
   int count = 0;
   for(int x = 0; x < length; x++){
@@ -101,13 +101,14 @@ int Network::getWidth(){
 
 //write the positions of neurons into a file
 //format: x.y.z
-int writePositions(int **pos, char *name){
-  FILE *output = fopen(name, "w");
+int Network::writePositions(int **pos, char *name){
+   FILE *output = std::fopen(name, "w");
   if(output != NULL){
+    std::fprintf(output, "%i\n", (length*height*width));
     for(int i = 0; i < pos.size(); i++){
-      fprintf(output, "%i.%i.%i\n", pos[i][0], pos[i][1], pos[i][2]);
+      std::fprintf(output, "%i.%i.%i\n", pos[i][0], pos[i][1], pos[i][2]);
     }
-    fclose(output);
+    std::fclose(output);
     return 0;//add exceptionhandling
   }
   else
@@ -116,18 +117,27 @@ int writePositions(int **pos, char *name){
 
 //read positions from a file
 //format: x.y.z
-int[][] readPositions(char *name){
-  int[1000000000][3] positions;//TODO- make it dynamic to save resources
-  FILE *input = fopen(name, "r");
+int** Network::readPositions(char *name){
+  FILE *input = std::fopen(name, "r");
   if(input != NULL){
     int count = 0;
+    int anz = std::fscanf(input, "%i\n", anz);
+    int[anz][3] positions;
     while(input != EOF){
-      std::fscanf("%i.%i.%i\n", positions[count][0], positions[count][1], positions[count][2]);
+      std::fscanf(input, "%i.%i.%i\n", positions[count][0], positions[count][1], positions[count][2]);
       count++;
     }
-    fclose(input);
+    std::fclose(input);
     return positions;
   }
   else
-    return -1;
+    return -1;//wrong return-type
 }//end readPositions
+
+void Network::save(){
+  writePositions("pos.net", extractNeurons());
+}//end save
+
+void Network::load(){
+  initFromFile(readPositons("pos.net"));
+}//end load

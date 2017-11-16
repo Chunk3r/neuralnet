@@ -33,7 +33,7 @@ private:
   int height;
   int width;
   std::vector<std::vector<std::vector<Neuron>>> v;
-  int[][] extractNeurons();
+  int** extractNeurons();
   int** readPositions(char* fileName);
   int writePositions(int** pos, char* fileName);
 
