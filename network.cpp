@@ -44,7 +44,7 @@ int[][] Network::extractNeurons(){
   for(int x = 0; x < length; x++){
     for(int y = 0; y < height; y++){
       for(int z = 0; z < width; z++){
-	if(v[x][y][z] != NULL){
+	if(&v[x][y][z] != NULL){
 	  pos[count][0] = x;
 	  pos[count][1] = y;
 	  pos[count][2] = z;
@@ -62,11 +62,10 @@ void Network::connectNeurons(Neuron* n){
   for(int i = (n->xPos() - r); i <= (n->xPos() + r); i++){
     for(int j = (n->yPos() - r); j <= (n->yPos() + r); j++){
       for(int k = (n->zPos() - r); k <= (n->zPos() + r); k++){
-	if(isInBounds(i, j, k) == 1 && &v[i][j][k] != NULL){
-	  if(i != n->xPos() || j != n->yPos() || k != n->zPos()){
-	    std::printf("add Neighbor\n");
-	    n->addNeighbor(&v[i][j][k]);
-	  }
+	if(isValidNeighbor(i, j, k, n->xPos(), n->yPos(), n->zPos()){
+	  std::printf("add Neighbor\n");
+	  n->addNeighbor(&v[i][j][k]);//check neuron.cpp
+	  //there is the random weight function missing
 	}
       }
     }
@@ -78,6 +77,13 @@ int Network::isInBounds(int i, int j, int k){
     if(j >= 0 && j < height)
       if(k >= 0 && k < width)
 	return 1;
+  return 0;
+}
+
+int Network::isValidNeighbor(int i, int j, int k, int x, int y, int z){
+  if(isInBounds(i, j, k) && v[i][j][k]!=NULL)
+    if(i!=x || j!=y || k!=z)
+      return 1;
   return 0;
 }
 

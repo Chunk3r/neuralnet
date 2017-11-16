@@ -25,6 +25,7 @@ public:
 
 private:
   int isInBounds(int i, int j, int k);
+  int isValidNeighbor(int i, int j, int k, int x, int y, int z);
   double rndmWeight();
   int length;
   int height;
