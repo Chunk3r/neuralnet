@@ -39,21 +39,22 @@ void Network::populate(){
 //iterate through vector and return an array containing
 //all positions where a neuron is stored
 int** Network::extractNeurons(){
-  int[(length*height*width)][3] pos;//required size is calculated
+  int maxAnz = length*height*width;
+  int[maxAnz][3] positions;//change it to pointer
   int count = 0;
   for(int x = 0; x < length; x++){
     for(int y = 0; y < height; y++){
       for(int z = 0; z < width; z++){
 	if(&v[x][y][z] != NULL){
-	  pos[count][0] = x;
-	  pos[count][1] = y;
-	  pos[count][2] = z;
+	  positions[count][0] = x;
+	  positions[count][1] = y;
+	  positions[count][2] = z;
 	  count++;
 	}
       }
     }
   }
-  return pos;
+  return positions;
 }//end extractNeurons
 
 void Network::connectNeurons(Neuron* n){
@@ -62,7 +63,7 @@ void Network::connectNeurons(Neuron* n){
   for(int i = (n->xPos() - r); i <= (n->xPos() + r); i++){
     for(int j = (n->yPos() - r); j <= (n->yPos() + r); j++){
       for(int k = (n->zPos() - r); k <= (n->zPos() + r); k++){
-	if(isValidNeighbor(i, j, k, n->xPos(), n->yPos(), n->zPos()){
+	if(isValidNeighbor(i, j, k, n->xPos(), n->yPos(), n->zPos())){
 	  std::printf("add Neighbor\n");
 	  n->addNeighbor(&v[i][j][k]);//check neuron.cpp
 	  //there is the random weight function missing
@@ -81,7 +82,7 @@ int Network::isInBounds(int i, int j, int k){
 }
 
 int Network::isValidNeighbor(int i, int j, int k, int x, int y, int z){
-  if(isInBounds(i, j, k) && v[i][j][k]!=NULL)
+  if(isInBounds(i, j, k) && v[i][j][k]!=NULL)//no match for operator!=
     if(i!=x || j!=y || k!=z)
       return 1;
   return 0;
@@ -104,8 +105,8 @@ int Network::getWidth(){
 int Network::writePositions(int **pos, char *name){
    FILE *output = std::fopen(name, "w");
   if(output != NULL){
-    std::fprintf(output, "%i\n", (length*height*width));
-    for(int i = 0; i < pos.size(); i++){
+    std::fprintf(output, "%i\n", &(length*height*width));
+    for(int i = 0; i < pos.size(); i++){//size must be a parameter
       std::fprintf(output, "%i.%i.%i\n", pos[i][0], pos[i][1], pos[i][2]);
     }
     std::fclose(output);
@@ -121,9 +122,10 @@ int** Network::readPositions(char *name){
   FILE *input = std::fopen(name, "r");
   if(input != NULL){
     int count = 0;
-    int anz = std::fscanf(input, "%i\n", anz);
-    int[anz][3] positions;
-    while(input != EOF){
+    int anz;
+    std::fscanf(input, "%i\n", &anz);
+    int[anz][3] positions;//make it a pointer
+    while(input != EOF){//must read line first
       std::fscanf(input, "%i.%i.%i\n", positions[count][0], positions[count][1], positions[count][2]);
       count++;
     }
@@ -135,7 +137,7 @@ int** Network::readPositions(char *name){
 }//end readPositions
 
 void Network::save(){
-  writePositions("pos.net", extractNeurons());
+  writePositions(extractNeurons(), "pos.net");//const zeichenkette kann nicht nach char* konvertiert werden
 }//end save
 
 void Network::load(){

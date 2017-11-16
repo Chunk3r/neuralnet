@@ -24,6 +24,8 @@ public:
   int getWidth();
   void save(char* fileName);
   void load(char* fileName);
+  void save();//if no name is defined use default
+  void load();
 
 private:
   int isInBounds(int i, int j, int k);
