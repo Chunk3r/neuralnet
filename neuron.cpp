@@ -1,6 +1,8 @@
 #include "neuron.hpp"
 #include <cstdio>
 
+//test comment for git
+
 Neuron::Neuron(int x, int y, int z){
   this->x = x;
   this->y = y;
@@ -20,6 +22,7 @@ void Neuron::addNeighbor(Neuron* n, double w){
 }
 
 //add Neighbor with random weight
+
 
 //adds signals from inputs to the Potential
 //calls fire if Threshold is reached
