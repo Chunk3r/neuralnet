@@ -16,7 +16,6 @@ public:
   Network(int l, int h, int w);
   void populate();
   void push_back(std::vector<std::vector<std::vector<Neuron>>>* vp, Neuron n);
-  //void populateWithDna(File* input);
   void connectNeurons(Neuron* n);
   Neuron* getNeuron(int x, int y, int z);
   int getLength();

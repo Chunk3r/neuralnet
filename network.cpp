@@ -10,6 +10,12 @@ Neuron* Network::getNeuron(int x, int y, int z){
   return &(v[x][y][z]);
 }
 
+
+/***********************
+ *initalizing functions*
+ ***********************/
+
+
 void Network::populate(){
   int anz = 0;//for debugging
   for(int x = 0; x < length; x++){
@@ -28,6 +34,13 @@ void Network::populate(){
   }
   std::printf("\n-----net populated-----\n");
 }//end populate
+
+
+
+void Network::initFromFile(int** pos, double* weights){
+
+}//end initFromFile
+
 
 //iterate through vector and return an array containing
 //all positions where a neuron is stored
@@ -79,7 +92,13 @@ int Network::isValidNeighbor(int i, int j, int k, int x, int y, int z){
     if(i!=x || j!=y || k!=z)
       return 1;
   return 0;
-}
+}//end isValidNeighbor
+
+
+/************
+ *getter    *
+ ************/
+
 
 int Network::getLength(){
   return length;
@@ -92,6 +111,12 @@ int Network::getHeight(){
 int Network::getWidth(){
   return width;
 }
+
+
+/**********************
+ *read/write Positions*
+ **********************/
+
 
 //write the positions of neurons into a file
 //format: x.y.z
@@ -126,8 +151,28 @@ int** Network::readPositions(char *name){
     return positions;
   }
   else
-    return -1;//wrong return-type
+    return NULL;
 }//end readPositions
+
+
+/*********************
+ *save/load functions*
+ *********************/
+
+
+//if filename is defined
+
+void Network::save(char* fileName){
+  writePositions(extractNeurons(), fileName);
+}//end save
+
+void Network::load(char* fileName){
+  initFromFile(readPositions(fileName));
+}//end load
+
+
+
+//if no filename is defined use default
 
 void Network::save(){
   writePositions(extractNeurons(), "pos.net");//const zeichenkette kann nicht nach char* konvertiert werden
@@ -137,6 +182,8 @@ void Network::load(){
   initFromFile(readPositions("pos.net"));//warning
 }//end load
 
-void initFromFile(int** pos){
+void initFromFile(int** pos){//TODO reposition
 
-}
+}//end initFromFile
+
+
