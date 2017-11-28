@@ -29,18 +29,11 @@ void Network::populate(){
   std::printf("\n-----net populated-----\n");
 }//end populate
 
-/*void Network::populateWithDna(FileInput){
-  for(int i = 0; i < a.size; i++){
-    //add neuron an durch vector gegebener stelle
-  }
-}//end populateWithDna
-*/
-
 //iterate through vector and return an array containing
 //all positions where a neuron is stored
 int** Network::extractNeurons(){
   int maxAnz = length*height*width;
-  int[maxAnz][3] positions;//change it to pointer
+  int** positions;//allocate memory
   int count = 0;
   for(int x = 0; x < length; x++){
     for(int y = 0; y < height; y++){
@@ -105,7 +98,7 @@ int Network::getWidth(){
 int Network::writePositions(int **pos, char *name){
    FILE *output = std::fopen(name, "w");
   if(output != NULL){
-    std::fprintf(output, "%i\n", &(length*height*width));
+    std::fprintf(output, "%i\n", (length*height*width));
     for(int i = 0; i < pos.size(); i++){//size must be a parameter
       std::fprintf(output, "%i.%i.%i\n", pos[i][0], pos[i][1], pos[i][2]);
     }
@@ -124,9 +117,9 @@ int** Network::readPositions(char *name){
     int count = 0;
     int anz;
     std::fscanf(input, "%i\n", &anz);
-    int[anz][3] positions;//make it a pointer
-    while(input != EOF){//must read line first
-      std::fscanf(input, "%i.%i.%i\n", positions[count][0], positions[count][1], positions[count][2]);
+    int** positions;//allocate memory
+    while(*input != EOF){//must read line first
+      std::fscanf(input, "%i.%i.%i\n", &positions[count][0], &positions[count][1], &positions[count][2]);
       count++;
     }
     std::fclose(input);
@@ -141,5 +134,9 @@ void Network::save(){
 }//end save
 
 void Network::load(){
-  initFromFile(readPositons("pos.net"));
+  initFromFile(readPositions("pos.net"));//warning
 }//end load
+
+void initFromFile(int** pos){
+
+}

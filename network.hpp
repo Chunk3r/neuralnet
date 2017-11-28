@@ -7,7 +7,7 @@
 #include <vector>
 #include <array>
 #include <cstdio>
-#include <iostream>
+#include <stdio.h>
 #include <cstdlib>
 
 class Network{
@@ -38,6 +38,7 @@ private:
   int** extractNeurons();
   int** readPositions(char* fileName);
   int writePositions(int** pos, char* fileName);
+  void initFromFile(int** pos);
 
 };
 
