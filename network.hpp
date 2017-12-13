@@ -4,6 +4,7 @@
 //in ihm werden die Neuronen gespeichert.
 
 #include "neuron.hpp"
+#include "filehandling.hpp"
 #include <vector>
 #include <array>
 #include <cstdio>
@@ -34,9 +35,7 @@ private:
   int height;
   int width;
   std::vector<std::vector<std::vector<Neuron>>> v;
-  int** extractNeurons();
-  int** readPositions(char* fileName);
-  int writePositions(int** pos, char* fileName);
+  int* extractNeurons();
   void initFromFile(int** pos);
 
 };

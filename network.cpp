@@ -150,50 +150,6 @@ int Network::getWidth(){
 }
 
 
-/**********************
- *read/write Positions*
- **********************/
-
-
-//write the positions of neurons into a file
-//format: x.y.z
-//change it from C to C++
-int Network::writePositions(int* pos, int size, const char* name){
-   FILE *output = std::fopen(name, "w");
-  if(output != NULL){
-    std::fprintf(output, "%i\n", (length*height*width));//TODO write l.h.w
-    for(int i = 0; i < size; i++){//size of pos
-      std::fprintf(output, "%i.%i.%i\n", pos[i*3+0], pos[i*3+1], pos[i*3+2]);
-    }
-    std::fclose(output);
-    return 0;//add exceptionhandling
-  }
-  else
-    return -1;
-}//end writePositions
-
-//read positions from a file
-//format: x.y.z
-int* Network::readPositions(const char *name){
-  FILE *input = std::fopen(name, "r");
-  if(input != NULL){//check if input is available
-    int count = 0;
-    int anz;
-    std::fscanf(input, "%i\n", &anz);
-    int* positions = new int[anz*3];//allocate memory
-    do{
-      std::fscanf(input, "%i.%i.%i\n", &positions[count*3+0], &positions[count*3+1], &positions[count*3+2]);
-      count++;
-    }while(*input != EOF);
-    
-    std::fclose(input);
-    return positions;
-  }
-  
-  return NULL;
-}//end readPositions
-
-
 /*********************
  *save/load functions*
  *********************/
@@ -202,21 +158,31 @@ int* Network::readPositions(const char *name){
 //if filename is specified
 
 void Network::save(char* posFileName, char* wFileName){
-  writePositions(extractNeurons(), posFileName);//TODO
-}//end save
+  Filehandling fHandler = new Filehandling;
+  fHandler.writePositions(extractNeurons(), posFileName);
+  fHandler.writeWeights(extractWeights(), wFileName);
+  delete fHandler;
+}
 
 void Network::load(char* posFileName, char* wFileName){
-  Network(readPositions(posFileName), readWeights(wFileName));
-}//end load
+  Filehandling fHandler = new Filehandling;
+  Network(fHandler.readPositions(posFileName), fHandler.readWeights(wFileName));
+  delete fHandler;
+}
 
 
 
 //if no filename is specified use default
 
 void Network::save(){
-  writePositions(extractNeurons(), "positions.net");//const zeichenkette kann nicht nach char* konvertiert werden
-}//end save
+  Filehandling fHandler = new Filehandling;
+  fHandler.writePositions(extractNeurons(), (char*)"positions.net");
+  fHandler.writeWeights(extractWeights(), (char*)"weights.net");
+  delete fHandler;
+}
 
 void Network::load(){
-  Network(readPositions("positions.net"), readWeights("weights.net"));//warning
-}//end load
+  Filehandling fHandler = new Filehandling;
+  Network(fHandler.readPositions((char*)"positions.net"), fHandler.readWeights((char*)"weights.net"));
+  delete fHandler;
+}
