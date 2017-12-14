@@ -7,8 +7,8 @@ head.o: head.cpp
 network.o: network.cpp network.hpp
 	g++ -Wall -c network.cpp network.hpp
 
-neuron.o: neuron.cpp neuron.hpp
-	g++ -Wall -c neuron.cpp neuron.hpp
+neuron.o: Neurons/neuron.cpp Neurons/neuron.hpp
+	g++ -Wall -c Neurons/neuron.cpp Neurons/neuron.hpp
 
 filehandling.o: filehandling.cpp filehandling.hpp
 	g++ -Wall -c filehandling.cpp filehandling.hpp

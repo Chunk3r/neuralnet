@@ -6,15 +6,15 @@ Network::Network(int l, int h, int w){
   width = w;
 
   populate();
-}//end Network
+}
 
-Network::Network(int* sizes, int* pos, double *w){
-  length = sizes[0];
-  height = sizes[1];
-  width = sizes[2];
+Network::Network(int* pos, double *weights){
+  length = pos[0];
+  height = pos[1];
+  width = pos[2];
 
   populate(pos);
-}//end Network
+}
 
 
 
@@ -40,7 +40,7 @@ void Network::populate(){
     std::printf("x");
   }
   std::printf("\n-----net populated-----\n");
-}//end populate
+}
 
 void Network::populate(int* pos){
   for(int x = 0; x < length; x++){
@@ -48,40 +48,59 @@ void Network::populate(int* pos){
     for(int y = 0; y < height; y++){
       v[x].push_back(std::vector<Neuron>());
       for(int z = 0; z < width; z++){
-	if(isValidPos(x, y, z, pos)){
+	if(Network::isValidPos(x, y, z, pos)){
 	  v[x][y].push_back(Neuron(x, y, z));
 	}
       }
     }
   }
-  std::prinf("\n-----net populated-----\n");
-}//end populate
+  std::printf("\n-----net populated-----\n");
+}
 
 
 /*********************
- *                   *
+ * extract functions *
  *********************/
 
 //iterate through vector and return an array containing
 //all positions where a neuron is stored
-int** Network::extractNeurons(){
-  int maxAnz = length*height*width;
-  int** positions;//allocate memory
-  int count = 0;
+int* Network::extractNeurons(){
+
+  //calc max possible size
+  int maxSize = length*height*width;
+
+  //allocate memory
+  int* positions = new int[maxSize];
+
+  //store dimensions
+  positions[0] = length;
+  positions[1] = height;
+  positions[2] = width;
+
+  //index variable
+  int count = 1;
+
+  //store all neuron positions
   for(int x = 0; x < length; x++){
     for(int y = 0; y < height; y++){
       for(int z = 0; z < width; z++){
 	if(&v[x][y][z] != NULL){
-	  positions[count][0] = x;
-	  positions[count][1] = y;
-	  positions[count][2] = z;
+	  positions[count*3+0] = x;
+	  positions[count*3+1] = y;
+	  positions[count*3+2] = z;
 	  count++;
 	}
       }
     }
   }
   return positions;
-}//end extractNeurons
+}
+
+
+double* extractWeights(){//TODO
+  double* weights;
+  return weights;
+}
 
 void Network::connectNeurons(Neuron* n){
   int r = n->getRadius();
@@ -97,7 +116,7 @@ void Network::connectNeurons(Neuron* n){
       }
     }
   }
-}//end connectNeurons
+}
 
 
 /******************
@@ -110,14 +129,14 @@ int Network::isInBounds(int i, int j, int k){
       if(k >= 0 && k < width)
 	return 1;
   return 0;
-}//end isInBounds
+}
 
 int Network::isValidNeighbor(int i, int j, int k, int x, int y, int z){
   if(isInBounds(i, j, k) && &(v[i][j][k])!=NULL)
     if(i!=x || j!=y || k!=z)
       return 1;
   return 0;
-}//end isValidNeighbor
+}
 
 bool isValidPos(int x, int y, int z, int* pos){
   for(int row = 1; row < pos[0]; row++){
@@ -125,7 +144,7 @@ bool isValidPos(int x, int y, int z, int* pos){
       return true;
   }
   return false;
-}//end isValidPos
+}
 
 
 /************
@@ -158,31 +177,27 @@ int Network::getWidth(){
 //if filename is specified
 
 void Network::save(char* posFileName, char* wFileName){
-  Filehandling fHandler = new Filehandling;
-  fHandler.writePositions(extractNeurons(), posFileName);
-  fHandler.writeWeights(extractWeights(), wFileName);
-  delete fHandler;
+  Filehandling fHandler;
+  fHandler.writePositions(posFileName, extractNeurons());
+  fHandler.writeWeights(wFileName, extractWeights());
 }
 
 void Network::load(char* posFileName, char* wFileName){
-  Filehandling fHandler = new Filehandling;
+  Filehandling fHandler;
   Network(fHandler.readPositions(posFileName), fHandler.readWeights(wFileName));
-  delete fHandler;
 }
 
 
 
-//if no filename is specified use default
+//if no filename is specified use default names
 
 void Network::save(){
-  Filehandling fHandler = new Filehandling;
-  fHandler.writePositions(extractNeurons(), (char*)"positions.net");
-  fHandler.writeWeights(extractWeights(), (char*)"weights.net");
-  delete fHandler;
+  Filehandling fHandler;
+  fHandler.writePositions((char*)"positions.net", extractNeurons());
+  fHandler.writeWeights((char*)"weights.net", extractWeights());
 }
 
 void Network::load(){
-  Filehandling fHandler = new Filehandling;
+  Filehandling fHandler;
   Network(fHandler.readPositions((char*)"positions.net"), fHandler.readWeights((char*)"weights.net"));
-  delete fHandler;
 }

@@ -2,7 +2,7 @@
 #define head_hpp
 
 #include "network.hpp"
-#include "neuron.hpp"
+#include "Neurons/neuron.hpp"
 #include <vector>
 #include <array>
 

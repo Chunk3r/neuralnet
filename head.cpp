@@ -1,7 +1,7 @@
 //#include "head.hpp"
 
 #include "network.hpp"
-#include "neuron.hpp"
+#include "Neurons/neuron.hpp"
 #include <vector>
 #include <array>
 #include <cstdlib>

@@ -1,9 +1,7 @@
 #include "filehandling.hpp"
 
-using namespace std;
-
-void Filehandling::writePositions(const char* name, int* pos){
-  ofstream output(name);
+void Filehandling::writePositions(char* name, int* pos){
+  std::ofstream output(name);
   if(output.is_open()){
     int size = pos[0]*pos[1]*pos[2];
     
@@ -15,13 +13,13 @@ void Filehandling::writePositions(const char* name, int* pos){
     output.close();
   }
   else
-    cerr << "Unable to open File\n";
+    std::cerr << "Unable to open File\n";
 }
 
-void Filehandling::writeWeights(char* name, int* weights){
-  ofstream output(name);
+void Filehandling::writeWeights(char* name, double* weights){
+  std::ofstream output(name);
   if(output.is_open()){
-    int size = weights[0];
+    int size = (int)weights[0];
 
     for(int i = 0; i <= size; i++){
       output << weights[i] << "\n";
@@ -29,8 +27,8 @@ void Filehandling::writeWeights(char* name, int* weights){
   }
 }
 
-int* Filehandling::readPositions(const char* name){
-  ifstream input(name);
+int* Filehandling::readPositions( char* name){
+  std::ifstream input(name);
   if(input.is_open()){
     int length, height, width;
 
@@ -56,22 +54,20 @@ int* Filehandling::readPositions(const char* name){
     input.close();
     return pos;
   }
-  else{
-    cout << "Unable to open File\n";
-    return NULL;
-  }
+  std::cerr << "Unable to open File\n";
+  return NULL;
 }
 
-int* readWeights(char* name){
-  ifstream input(name);
-  if(input.is_open){
+double* Filehandling::readWeights(char* name){
+  std::ifstream input(name);
+  if(input.is_open()){
     int size;
     
     //read first line
     input >> size;
 
     //allocate memory
-    int* weights = new int[size+1];
+    double* weights = new double[size+1];
 
     weights[0] = size;
 
