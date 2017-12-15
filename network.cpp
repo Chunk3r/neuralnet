@@ -138,7 +138,7 @@ int Network::isValidNeighbor(int i, int j, int k, int x, int y, int z){
   return 0;
 }
 
-bool isValidPos(int x, int y, int z, int* pos){
+bool Network::isValidPos(int x, int y, int z, int* pos){
   for(int row = 1; row < pos[0]; row++){
     if(x == pos[row*3+0] && y == pos[row*3+1] && z == pos[row*3+2])
       return true;
