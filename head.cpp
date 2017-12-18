@@ -1,7 +1,7 @@
 //#include "head.hpp"
 
 #include "network.hpp"
-#include "neuron.hpp"
+#include "Neurons/neuron.hpp"
 #include <vector>
 #include <array>
 #include <cstdlib>
@@ -12,9 +12,9 @@ void cleanMemory();
 //void populate(Network* net);
 
 int main(){
-  int length = 30;
-  int height = 30;
-  int width = 30;
+  int length = 3;
+  int height = 3;
+  int width = 3;
   std::vector<std::array<int, 3>> positions;
   Network net(length, height, width);
 
