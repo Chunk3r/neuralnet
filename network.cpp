@@ -62,6 +62,11 @@ void Network::populate(int* pos){
  * extract functions *
  *********************/
 
+//insert operatoroverloading here.
+ostream operator<<(){
+
+}
+
 //iterate through vector and return an array containing
 //all positions where a neuron is stored
 int* Network::extractNeurons(){
