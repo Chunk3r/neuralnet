@@ -1,7 +1,5 @@
 #include "neuron.hpp"
 
-//test comment for git
-
 Neuron::Neuron(int x, int y, int z){
   this->x = x;
   this->y = y;
@@ -69,4 +67,22 @@ void Neuron::fire(){
 //resets the Membrane and does the cooldown
 void Neuron::resetMembrane(){
   membranePotential = 0;
+}
+
+//overloading << for simplified saving
+std::ostream& operator<<(std::ostream& out, Neuron::Neuron& n){
+  out << n.x << " " << n.y << " " << n.z << " " << n.radius << " ";
+
+  int wSize = n.weights.size();
+
+  for(int i = 0; i < wSize; i++){
+    out << n.weights[i];
+
+    if(i < (wSize-1))
+      out << " ";
+    else
+      out << "\n";
+  }
+
+  return out;
 }

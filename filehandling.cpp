@@ -1,5 +1,27 @@
 #include "filehandling.hpp"
 
+void Filehandling::write(char* fname, Network::Network* net){
+  std::ofstream output(fname);
+  if(output.is_open()){
+    output << *net;
+
+    int x = net.getLength();
+    int y = net.getHeight();
+    int z = net.getWidth();
+    
+    for(int i = 0; i < x; i++){
+      for(int j = 0; j < y; j++){
+	for(int k = 0; k < z; k++){
+	  output << *net[i][j][k];
+	}
+      }
+    }
+    output.close();
+  }
+  else
+    std::cerr << "Unable to open File\n";
+}
+
 void Filehandling::writePositions(char* name, int* pos){
   std::ofstream output(name);
   if(output.is_open()){

@@ -6,10 +6,12 @@
 #include <cstdio>
 #include <iostream>
 #include <stdio.h>
+#include "network.hpp"
 
 class Filehandling{
 
 public:
+  void write(char* fname, Network::Network* net);
   void writePositions(char* name, int* pos);
   void writeWeights(char* name, double* weights);
   int* readPositions(char* name);

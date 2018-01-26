@@ -24,10 +24,11 @@ public:
   int getLength();
   int getHeight();
   int getWidth();
-  void save(char* posFileName, char* wFileName);
-  void load(char* posFileName, char* wFileName);
+  void save(char* fname);
+  void load(char* fname);
   void save();//if no name is defined use default
   void load();
+  friend ostream& operator<<(ostream& out, Network& net);
 
 private:
   int isInBounds(int i, int j, int k);

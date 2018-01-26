@@ -9,6 +9,6 @@
 int main();
 void connectNeighbors(Neuron* n);
 void cleanMemory();
-  
+void save(char* fname); 
 
 #endif

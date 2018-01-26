@@ -63,8 +63,11 @@ void Network::populate(int* pos){
  *********************/
 
 //insert operatoroverloading here.
-ostream operator<<(){
+ostream& operator<<(ostream& out, Network& net){
+  out << net.length << " " << net.height << " " << net.width << "\n"
+      << (net.length*net.height*net.width);
 
+  return out;
 }
 
 //iterate through vector and return an array containing

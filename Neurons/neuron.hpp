@@ -17,7 +17,6 @@ public:
   int yPos();
   int zPos();
   friend std::ostream operator<<(std::ostream out, Neuron n);
-  friend std::istream operator>>(std::istream in, Neuron n);
 
 private:
   int radius;
