@@ -1,20 +1,38 @@
-#include "filehandling.hpp"
+#include "filehandler.hpp"
 
 void Filehandling::write(char* fname, Network::Network* net){
-  std::ofstream output(fname);
-  if(output.is_open()){
-    output << *net;
+  std::ofstream output(fname, std::ios_base::trunc);
 
-    int x = net.getLength();
-    int y = net.getHeight();
-    int z = net.getWidth();
+  if(output.is_open()){
+    output << "#" << std::endl;
+
+    int x = net->getLength();
+    int y = net->getHeight();
+    int z = net->getWidth();
+
+    output << x << " " << y << " " << z << std::endl;
+    output << "#" << std::endl;
     
     for(int i = 0; i < x; i++){
       for(int j = 0; j < y; j++){
         for(int k = 0; k < z; k++){
-         output << *net[i][j][k];
+            if(*net[i][j][k] != NULL)
+                output << *net[i][j][k] << std::endl;
         }
       }
+    }
+
+    output << "#" << std::endl;
+    for(int i = 0; i < x; i++){
+        for(int j = 0; j < y; j++){
+            for(int k = 0; k < z; k++){
+                if(*net[i][j][k] != NULL){
+                    output << i << " " << j << " " << k << std::endl;
+                    output << "#" << std::endl;
+                    output <<
+                }
+            }
+        }
     }
     output.close();
   }

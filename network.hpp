@@ -4,7 +4,7 @@
 //in ihm werden die Neuronen gespeichert.
 
 #include "Neurons/neuron.hpp"
-#include "filehandling.hpp"
+#include "filehandler.hpp"
 #include <vector>
 #include <array>
 #include <cstdio>

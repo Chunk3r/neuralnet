@@ -69,20 +69,10 @@ void Neuron::resetMembrane(){
   membranePotential = 0;
 }
 
-//overloading << for simplified saving
+//overloading << for simplified saving //overloading might be inappropriate
 std::ostream& operator<<(std::ostream& out, Neuron::Neuron& n){
-  out << n.x << " " << n.y << " " << n.z << " " << n.radius << " ";
-
-  int wSize = n.weights.size();
-
-  for(int i = 0; i < wSize; i++){
-    out << n.weights[i];
-
-    if(i < (wSize-1))
-      out << " ";
-    else
-      out << "\n";
-  }
+  out << n.x << " " << n.y << " " << n.z << " " << n.radius
+      << n.membraneThreshold << " " << n.membranePotential;
 
   return out;
 }

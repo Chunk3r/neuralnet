@@ -62,10 +62,8 @@ void Network::populate(int* pos){
  * extract functions *
  *********************/
 
-//insert operatoroverloading here.
 ostream& operator<<(ostream& out, Network& net){
-  out << net._length << " " << net._height << " " << net._width << "\n"
-      << (net._length*net._height*net._width);
+  out << net._length << " " << net._height << " " << net._width;
 
   return out;
 }
@@ -106,16 +104,15 @@ int* Network::extractPositions(){
 }
 
 
-double* extractWeights(){//TODO
-    int maxSize = _length * _height * _width;
-    double* weights = new double[maxSize];
+std::vector<std::array<double, 4>> extractConnections(){//TODO
+    std::vector<std::array<double, 4>> neighbours;
     int count = 0;
 
     for(int x = 0; x < _lenght; x++){
         for(int y = 0; y < _height; y++){
             for(int z = 0; z < _width; z++){
-                if(&_v[x][y][z] != NULL)
-                    weights[count++] = _v[x][y][z].weight();
+                if(_v[x][y][z] != NULL)
+                    neighbours.push_back(_v[x][y][z].getNeighbours());
             }
         }
     }
@@ -191,7 +188,7 @@ int Network::getWidth(){
 
 
 /*********************
- *save/load functions*
+ *save/load functions* the following functionality has to be done elsewhere
  *********************/
 
 

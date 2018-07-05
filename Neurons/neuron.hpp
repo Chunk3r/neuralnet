@@ -25,7 +25,6 @@ private:
     int z;
     double membranePotential;
     double membraneThreshold;
-    double weight;//0 <= w < 1
     std::vector<Neuron*> neighbors;
     std::vector<double> weights;
     void fire();

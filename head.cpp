@@ -8,8 +8,6 @@
 
 void initNetwork(Network* net);
 void connectNeighbors(Network* net, Neuron* n);
-void cleanMemory();
-//void populate(Network* net);
 
 int main(){
   int length = 3;
@@ -42,9 +40,9 @@ void initNetwork(Network* net){
       }
     } 
   }
-}//end scanNetwork
+}//end initNetwork
 
-//verbindet neuronen mit ihren nachbarn innerhalb des eigenen Radius
+//connects neuros with their neighbours within their radius
 void connectNeighbors(Network* net, Neuron* n){
   int r = n->getRadius();
   for(int i = -r; i <= r; i++){
@@ -57,8 +55,3 @@ void connectNeighbors(Network* net, Neuron* n){
     }
   }
 }//end connectNeighbors
-
-/*void cleanMemory(Network net){
-  //Network::~Network(net);
-}//end cleanMemory
-//*/
