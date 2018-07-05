@@ -16,8 +16,8 @@ int main(){
   int height = 3;
   int width = 3;
   std::vector<std::array<int, 3>> positions;
-  Network net(length, height, width);
 
+  Network net(length, height, width);
   net.populate();
 
   //TEST_AREA
@@ -26,22 +26,19 @@ int main(){
   net.getNeuron(0, 0, 0)->addPotential(20.0);
   net.getNeuron(1, 2, 0)->addPotential(21.0);
 
-  //net.connectNeurons(net.getNeuron(0, 0, 0));
   initNetwork(&net);
   net.getNeuron(0, 0, 0)->addPotential(80.0);
-  
-  //initNetwork(&net);
   
   //cleanMemory();
   
   return 0;
 }//end main
 
-void initNetwork(Network* net){//Name der funktion passt nicht richtig
+void initNetwork(Network* net){
   for(int x = 0; x < net->getLength(); x++){
     for(int y = 0; y < net->getHeight(); y++){
       for(int z = 0; z < net->getWidth(); z++){
-	net->connectNeurons(net->getNeuron(x, y, z));
+        net->connectNeurons(net->getNeuron(x, y, z));
       }
     } 
   }

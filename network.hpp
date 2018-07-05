@@ -35,11 +35,12 @@ private:
   int isValidNeighbor(int i, int j, int k, int x, int y, int z);
   bool isValidPos(int x, int y, int z, int* pos);
   double rndmWeight();//needs to be done in neuron
-  int length;
-  int height;
-  int width;
+  int _length;
+  int _height;
+  int _width;
   std::vector<std::vector<std::vector<Neuron>>> v;
   int* extractNeurons();
+  double* extractWeights();
   void initFromFile(int* pos);
 
 };

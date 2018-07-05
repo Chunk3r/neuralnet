@@ -11,9 +11,9 @@ void Filehandling::write(char* fname, Network::Network* net){
     
     for(int i = 0; i < x; i++){
       for(int j = 0; j < y; j++){
-	for(int k = 0; k < z; k++){
-	  output << *net[i][j][k];
-	}
+        for(int k = 0; k < z; k++){
+         output << *net[i][j][k];
+        }
       }
     }
     output.close();

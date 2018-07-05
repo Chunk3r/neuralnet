@@ -1,17 +1,17 @@
 #include "network.hpp"
 
 Network::Network(int l, int h, int w){
-  length = l;
-  height = h;
-  width = w;
+  _length = l;
+  _height = h;
+  _width = w;
 
   populate();
 }
 
 Network::Network(int* pos, double *weights){
-  length = pos[0];
-  height = pos[1];
-  width = pos[2];
+  _length = pos[0];
+  _height = pos[1];
+  _width = pos[2];
 
   populate(pos);
 }
@@ -25,12 +25,12 @@ Network::Network(int* pos, double *weights){
 
 void Network::populate(){
   int anz = 0;//for debugging
-  for(int x = 0; x < length; x++){
-    v.push_back(std::vector<std::vector<Neuron>>());
-    for(int y = 0; y < height; y++){
-      v[x].push_back(std::vector<Neuron>());
+  for(int x = 0; x < _length; x++){
+    _v.push_back(std::vector<std::vector<Neuron>>());
+    for(int y = 0; y < _height; y++){
+      _v[x].push_back(std::vector<Neuron>());
       for(int z = 0; z < width; z++){
-	v[x][y].push_back(Neuron(x, y, z));
+    _v[x][y].push_back(Neuron(x, y, z));
 	anz++;
 	std::printf("anz neurons: %i\n", anz);
 	std::printf("z");
@@ -43,14 +43,14 @@ void Network::populate(){
 }
 
 void Network::populate(int* pos){
-  for(int x = 0; x < length; x++){
-    v.push_back(std::vector<std::vector<Neuron>>());
-    for(int y = 0; y < height; y++){
-      v[x].push_back(std::vector<Neuron>());
+  for(int x = 0; x < _length; x++){
+    _v.push_back(std::vector<std::vector<Neuron>>());
+    for(int y = 0; y < _height; y++){
+      _v[x].push_back(std::vector<Neuron>());
       for(int z = 0; z < width; z++){
-	if(Network::isValidPos(x, y, z, pos)){
-	  v[x][y].push_back(Neuron(x, y, z));
-	}
+        if(Network::isValidPos(x, y, z, pos)){
+            _v[x][y].push_back(Neuron(x, y, z));
+        }
       }
     }
   }
@@ -64,40 +64,41 @@ void Network::populate(int* pos){
 
 //insert operatoroverloading here.
 ostream& operator<<(ostream& out, Network& net){
-  out << net.length << " " << net.height << " " << net.width << "\n"
-      << (net.length*net.height*net.width);
+  out << net._length << " " << net._height << " " << net._width << "\n"
+      << (net._length*net._height*net._width);
 
   return out;
 }
 
 //iterate through vector and return an array containing
-//all positions where a neuron is stored
-int* Network::extractNeurons(){
+//the dimensions of the network and (line 0) -> needs an own function
+//all positions where a neuron is stored (line 1..n)
+int* Network::extractPositions(){
 
   //calc max possible size
-  int maxSize = length*height*width;
+  int maxSize = _length*_height*_width;
 
   //allocate memory
   int* positions = new int[maxSize];
 
   //store dimensions
-  positions[0] = length;
-  positions[1] = height;
-  positions[2] = width;
+  positions[0] = _length;
+  positions[1] = _height;
+  positions[2] = _width;
 
   //index variable
-  int count = 1;
+  int row = 1;
 
   //store all neuron positions
-  for(int x = 0; x < length; x++){
-    for(int y = 0; y < height; y++){
-      for(int z = 0; z < width; z++){
-	if(&v[x][y][z] != NULL){
-	  positions[count*3+0] = x;
-	  positions[count*3+1] = y;
-	  positions[count*3+2] = z;
-	  count++;
-	}
+  for(int x = 0; x < _length; x++){
+    for(int y = 0; y < _height; y++){
+      for(int z = 0; z < _width; z++){
+        if(&_v[x][y][z] != NULL){
+        positions[row*3+0] = x;
+        positions[row*3+1] = y;
+        positions[row*3+2] = z;
+        row++;
+        }
       }
     }
   }
@@ -106,8 +107,20 @@ int* Network::extractNeurons(){
 
 
 double* extractWeights(){//TODO
-  double* weights;
-  return weights;
+    int maxSize = _length * _height * _width;
+    double* weights = new double[maxSize];
+    int count = 0;
+
+    for(int x = 0; x < _lenght; x++){
+        for(int y = 0; y < _height; y++){
+            for(int z = 0; z < _width; z++){
+                if(&_v[x][y][z] != NULL)
+                    weights[count++] = _v[x][y][z].weight();
+            }
+        }
+    }
+
+    return weights;
 }
 
 void Network::connectNeurons(Neuron* n){
@@ -132,15 +145,15 @@ void Network::connectNeurons(Neuron* n){
  ******************/
 
 int Network::isInBounds(int i, int j, int k){
-  if(i >= 0 && i < length)
-    if(j >= 0 && j < height)
-      if(k >= 0 && k < width)
+  if(i >= 0 && i < _length)
+    if(j >= 0 && j < _height)
+      if(k >= 0 && k < _width)
 	return 1;
   return 0;
 }
 
 int Network::isValidNeighbor(int i, int j, int k, int x, int y, int z){
-  if(isInBounds(i, j, k) && &(v[i][j][k])!=NULL)
+  if(isInBounds(i, j, k) && &(_v[i][j][k])!=NULL)
     if(i!=x || j!=y || k!=z)
       return 1;
   return 0;
@@ -161,19 +174,19 @@ bool Network::isValidPos(int x, int y, int z, int* pos){
 
 
 Neuron* Network::getNeuron(int x, int y, int z){
-  return &(v[x][y][z]);
+  return &(_v[x][y][z]);
 }
 
 int Network::getLength(){
-  return length;
+  return _length;
 }
 
 int Network::getHeight(){
-  return height;
+  return _height;
 }
 
 int Network::getWidth(){
-  return width;
+  return _width;
 }
 
 
