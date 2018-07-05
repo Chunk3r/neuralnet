@@ -8,14 +8,13 @@
 #include <vector>
 #include <array>
 #include <cstdio>
-#include <stdio.h>
-#include <cstdlib>
+#include <fstream>
 
 class Network{
 
 public:
   Network(int l, int h, int w);
-  Network(int* pos, double* weights);
+  Network(char* fname);
   void populate();
   void populate(int* pos);
   void push_back(std::vector<std::vector<std::vector<Neuron>>>* vp, Neuron n);
@@ -24,10 +23,7 @@ public:
   int getLength();
   int getHeight();
   int getWidth();
-  void save(char* fname);
-  void load(char* fname);
-  void save();//if no name is defined use default
-  void load();
+  void toFile(char* fname);
   friend ostream& operator<<(ostream& out, Network& net);
 
 private:
@@ -38,7 +34,7 @@ private:
   int _length;
   int _height;
   int _width;
-  std::vector<std::vector<std::vector<Neuron>>> v;
+  std::vector<std::vector<std::vector<Neuron>>> _neurons;
   int* extractNeurons();
   double* extractWeights();
   void initFromFile(int* pos);

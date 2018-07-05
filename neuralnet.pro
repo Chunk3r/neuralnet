@@ -17,6 +17,5 @@ SOURCES += \
 
 HEADERS += \
     Neurons/neuron.hpp \
-    head.hpp \
     network.hpp \
     filehandler.hpp
