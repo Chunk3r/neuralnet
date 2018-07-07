@@ -4,27 +4,24 @@
 //in ihm werden die Neuronen gespeichert.
 
 #include "Neurons/neuron.hpp"
-#include "filehandler.hpp"
 #include <vector>
 #include <array>
-#include <cstdio>
 #include <fstream>
+#include <cstdio>
 
 class Network{
 
 public:
   Network(int l, int h, int w);
-  Network(char* fname);
+  Network(const char* fname);
   void populate();
   void populate(int* pos);
-  void push_back(std::vector<std::vector<std::vector<Neuron>>>* vp, Neuron n);
   void connectNeurons(Neuron* n);
   Neuron* getNeuron(int x, int y, int z);
   int getLength();
   int getHeight();
   int getWidth();
   void toFile(char* fname);
-  friend ostream& operator<<(ostream& out, Network& net);
 
 private:
   int isInBounds(int i, int j, int k);

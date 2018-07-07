@@ -69,13 +69,19 @@ void Neuron::resetMembrane(){
   _membranePotential = 0;
 }
 
-void Neuron::propertiesToStream(std::ostream out){
-    out << n._x << " " << n._y << " " << n._z << " " << n._radius
-        << n._membraneThreshold << " " << n._membranePotential;
+
+/*******************
+ * output functions*
+ *******************/
+
+void Neuron::propertiesToStream(std::ostream& out){
+    out << this->_x << " " << this->_y << " "
+        << this->_z << " " << this->_radius << " "
+        << _membraneThreshold << " " << _membranePotential;
 }
 
-void Neuron::neighborsToStream(std::ostream out){
-    out << _x << " " << _y << " " << _z << std::endl;
+void Neuron::neighborsToStream(std::ostream& out){
+    out << this->_x << " " << this->_y << " " << this->_z << std::endl;
     out << "#" << std::endl;
 
     int size = _neighbors.size();

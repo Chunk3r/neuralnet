@@ -1,5 +1,3 @@
-//#include "head.hpp"
-
 #include "network.hpp"
 #include "Neurons/neuron.hpp"
 #include <vector>
@@ -13,7 +11,6 @@ int main(){
   int length = 3;
   int height = 3;
   int width = 3;
-  std::vector<std::array<int, 3>> positions;
 
   Network net(length, height, width);
   net.populate();
@@ -21,10 +18,15 @@ int main(){
   //TEST_AREA
   std::printf("net lenght:%i\n", net.getLength());
 
+  //test if fire Function of Neurons is working
   net.getNeuron(0, 0, 0)->addPotential(20.0);
   net.getNeuron(1, 2, 0)->addPotential(21.0);
 
+  //
   initNetwork(&net);
+
+
+  net.toFile("net.txt");
   net.getNeuron(0, 0, 0)->addPotential(80.0);
   
   //cleanMemory();

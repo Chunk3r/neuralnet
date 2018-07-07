@@ -8,8 +8,8 @@ Network::Network(int l, int h, int w){
   populate();
 }
 
-Network::Network(char *fname){
-    ifstream in(fname, std::ios_base::in);
+Network::Network(const char* fname){
+    std::ifstream in(fname);
     //TODO
 }
 
@@ -19,22 +19,22 @@ Network::Network(char *fname){
 
 
 void Network::populate(){
-  int anz = 0;//for debugging
-  for(int x = 0; x < _length; x++){
-    _neurons.push_back(std::vector<std::vector<Neuron>>());
-    for(int y = 0; y < _height; y++){
-      _neurons[x].push_back(std::vector<Neuron>());
-      for(int z = 0; z < width; z++){
-    _neurons[x][y].push_back(Neuron(x, y, z));
-	anz++;
-	std::printf("anz neurons: %i\n", anz);
-	std::printf("z");
-      }
-      std::printf("y");
+    int anz = 0;//for debugging
+    for(int x = 0; x < _length; x++){
+        _neurons.push_back(std::vector<std::vector<Neuron>>());
+        for(int y = 0; y < _height; y++){
+            _neurons[x].push_back(std::vector<Neuron>());
+            for(int z = 0; z < _width; z++){
+                _neurons[x][y].push_back(Neuron(x, y, z));
+                anz++;
+                std::printf("anz neurons: %i\n", anz);
+                std::printf("z");
+            }
+            std::printf("y");
+        }
+        std::printf("x");
     }
-    std::printf("x");
-  }
-  std::printf("\n-----net populated-----\n");
+    std::printf("\n-----net populated-----\n");
 }
 
 void Network::populate(int* pos){
@@ -42,7 +42,7 @@ void Network::populate(int* pos){
     _neurons.push_back(std::vector<std::vector<Neuron>>());
     for(int y = 0; y < _height; y++){
       _neurons[x].push_back(std::vector<Neuron>());
-      for(int z = 0; z < width; z++){
+      for(int z = 0; z < _width; z++){
         if(Network::isValidPos(x, y, z, pos)){
             _neurons[x][y].push_back(Neuron(x, y, z));
         }
@@ -57,8 +57,8 @@ void Network::populate(int* pos){
  * extract functions *
  *********************/
 
-void toFile(char* fname){
-    std::ofstream out(fname, std::ios_base::trunc);
+void Network::toFile(char* fname){
+    std::ofstream out(fname, std::ofstream::trunc);
     if(out.is_open()){
         out << _length << " " << _height << " " << _width << std::endl;
         out << "#" << std::endl;
@@ -96,7 +96,7 @@ void Network::connectNeurons(Neuron* n){
       for(int k = (n->zPos() - r); k <= (n->zPos() + r); k++){
 	if(isValidNeighbor(i, j, k, n->xPos(), n->yPos(), n->zPos())){
 	  std::printf("add Neighbor\n");
-	  n->addNeighbor(&v[i][j][k]);//check neuron.cpp
+      n->addNeighbor(&_neurons[i][j][k]);//check neuron.cpp
 	  //there is the random weight function missing
 	}
       }

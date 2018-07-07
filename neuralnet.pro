@@ -8,14 +8,10 @@ SOURCES += \
     network.cpp \
     Neurons/neuron.cpp \
     head.cpp \
-    main.cpp \
-    network.cpp \
-    filehandler.cpp
-        filehandler.cpp
+    network.cpp
         network.cpp
         Neurons/neuron.cpp
 
 HEADERS += \
     Neurons/neuron.hpp \
-    network.hpp \
-    filehandler.hpp
+    network.hpp

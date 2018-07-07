@@ -18,8 +18,8 @@ public:
     int xPos();
     int yPos();
     int zPos();
-    void propertiesToStream(std::ostream out);
-    void neighborsToStream(std::ostream out);
+    void propertiesToStream(std::ostream& out);
+    void neighborsToStream(std::ostream& out);
 
 private:
     int _radius;
