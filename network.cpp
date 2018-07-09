@@ -1,16 +1,48 @@
 #include "network.hpp"
 
 Network::Network(int l, int h, int w){
-  _length = l;
-  _height = h;
-  _width = w;
+    _length = l;
+    _height = h;
+    _width = w;
 
-  populate();
+    populate();
 }
 
 Network::Network(const char* fname){
     std::ifstream in(fname);
-    //TODO
+    in.open(fname);
+
+    std::ostringstream oss;
+    oss << in.rdbuf();
+    in.close();
+
+    std::string data;
+    data = oss.str();
+
+    int state = 0;
+
+    StringTokenizer tokenizer(data, "\n");
+    while (tokenizer.hasMoreTokens()) {
+        StringTokenizer lineTokenizer(tokenizer.nextToken(), " ");
+        std::string token = lineTokenizer.nextToken();
+        if(token[0] == '#'){
+            if(state == 4)
+                state--;
+            else
+                state++;
+            continue;
+        }
+
+        switch(state){
+        case 1:
+            _length = std::stoi(token);
+            _height =std::stoi(lineTokenizer.nextToken());
+            _width = std::stoi(lineTokenizer.nextToken());
+            break;
+        case 2:
+
+        }
+    }
 }
 
 /************************
@@ -37,19 +69,19 @@ void Network::populate(){
     std::printf("\n-----net populated-----\n");
 }
 
-void Network::populate(int* pos){
-  for(int x = 0; x < _length; x++){
-    _neurons.push_back(std::vector<std::vector<Neuron>>());
-    for(int y = 0; y < _height; y++){
-      _neurons[x].push_back(std::vector<Neuron>());
-      for(int z = 0; z < _width; z++){
-        if(Network::isValidPos(x, y, z, pos)){
-            _neurons[x][y].push_back(Neuron(x, y, z));
+void Network::populate(int* positions){
+    for(int x = 0; x < _length; x++){
+        _neurons.push_back(std::vector<std::vector<Neuron>>());
+        for(int y = 0; y < _height; y++){
+            _neurons[x].push_back(std::vector<Neuron>());
+            for(int z = 0; z < _width; z++){
+                if(Network::isValidPos(x, y, z, positions)){
+                    _neurons[x][y].push_back(Neuron(x, y, z));
+                }
+            }
         }
-      }
     }
-  }
-  std::printf("\n-----net populated-----\n");
+    std::printf("\n-----net populated-----\n");
 }
 
 
@@ -57,7 +89,7 @@ void Network::populate(int* pos){
  * extract functions *
  *********************/
 
-void Network::toFile(char* fname){
+void Network::toFile(const char* fname){
     std::ofstream out(fname, std::ofstream::trunc);
     if(out.is_open()){
         out << _length << " " << _height << " " << _width << std::endl;
@@ -89,19 +121,19 @@ void Network::toFile(char* fname){
 //search for neighbors within a radius and
 //connect them to the given neuron
 void Network::connectNeurons(Neuron* n){
-  int r = n->getRadius();
-  std::printf("start looping\n");
-  for(int i = (n->xPos() - r); i <= (n->xPos() + r); i++){
-    for(int j = (n->yPos() - r); j <= (n->yPos() + r); j++){
-      for(int k = (n->zPos() - r); k <= (n->zPos() + r); k++){
-	if(isValidNeighbor(i, j, k, n->xPos(), n->yPos(), n->zPos())){
-	  std::printf("add Neighbor\n");
-      n->addNeighbor(&_neurons[i][j][k]);//check neuron.cpp
-	  //there is the random weight function missing
-	}
-      }
+    int r = n->getRadius();
+    std::printf("start looping\n");
+    for(int i = (n->xPos() - r); i <= (n->xPos() + r); i++){
+        for(int j = (n->yPos() - r); j <= (n->yPos() + r); j++){
+            for(int k = (n->zPos() - r); k <= (n->zPos() + r); k++){
+                if(isValidNeighbor(i, j, k, n->xPos(), n->yPos(), n->zPos())){
+                    std::printf("add Neighbor\n");
+                    n->addNeighbor(&_neurons[i][j][k]);//check neuron.cpp
+                    //there is the random weight function missing
+                }
+            }
+        }
     }
-  }
 }
 
 
@@ -110,26 +142,26 @@ void Network::connectNeurons(Neuron* n){
  ******************/
 
 int Network::isInBounds(int i, int j, int k){
-  if(i >= 0 && i < _length)
-    if(j >= 0 && j < _height)
-      if(k >= 0 && k < _width)
-	return 1;
-  return 0;
+    if(i >= 0 && i < _length)
+        if(j >= 0 && j < _height)
+            if(k >= 0 && k < _width)
+                return 1;
+    return 0;
 }
 
 int Network::isValidNeighbor(int i, int j, int k, int x, int y, int z){
-  if(isInBounds(i, j, k) && &(_neurons[i][j][k])!=NULL)
-    if(i!=x || j!=y || k!=z)
-      return 1;
-  return 0;
+    if(isInBounds(i, j, k) && &(_neurons[i][j][k])!=NULL)
+        if(i!=x || j!=y || k!=z)
+            return 1;
+    return 0;
 }
 
 bool Network::isValidPos(int x, int y, int z, int* pos){
-  for(int row = 1; row < pos[0]; row++){
-    if(x == pos[row*3+0] && y == pos[row*3+1] && z == pos[row*3+2])
-      return true;
-  }
-  return false;
+    for(int row = 1; row < pos[0]; row++){
+        if(x == pos[row*3+0] && y == pos[row*3+1] && z == pos[row*3+2])
+            return true;
+    }
+    return false;
 }
 
 
@@ -139,17 +171,17 @@ bool Network::isValidPos(int x, int y, int z, int* pos){
 
 
 Neuron* Network::getNeuron(int x, int y, int z){
-  return &(_neurons[x][y][z]);
+    return &(_neurons[x][y][z]);
 }
 
 int Network::getLength(){
-  return _length;
+    return _length;
 }
 
 int Network::getHeight(){
-  return _height;
+    return _height;
 }
 
 int Network::getWidth(){
-  return _width;
+    return _width;
 }

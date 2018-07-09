@@ -7,11 +7,9 @@ SOURCES += \
         head.cpp \
     network.cpp \
     Neurons/neuron.cpp \
-    head.cpp \
-    network.cpp
-        network.cpp
-        Neurons/neuron.cpp
+    tokenizer.cpp \
 
 HEADERS += \
     Neurons/neuron.hpp \
-    network.hpp
+    network.hpp \
+    tokenizer.hpp \
