@@ -6,6 +6,7 @@
 #include <vector>
 #include <array>
 #include <fstream>
+#include <sstream>
 #include <cstdio>
 
 class Network{

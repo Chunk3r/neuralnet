@@ -40,7 +40,14 @@ Network::Network(const char* fname){
             _width = std::stoi(lineTokenizer.nextToken());
             break;
         case 2:
-
+            //create neuron objects
+            break;
+        case 3:
+            //get coordinates of neuron, wich gets its neighbors
+            break;
+        case 4:
+            //add neighbors
+            break;
         }
     }
 }
