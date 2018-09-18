@@ -7,9 +7,9 @@ void initNetwork(Network* net);
 void connectNeighbors(Network* net, Neuron* n);
 
 int main(){
-    int length = 30;
-    int height = 30;
-    int width = 30;
+    int length = 3;
+    int height = 3;
+    int width = 3;
 
     Network net(length, height, width);
     net.populate();
@@ -27,6 +27,9 @@ int main(){
 
     net.toFile("net.txt");
     net.getNeuron(0, 0, 0)->addPotential(80.0);
+
+    Network net1("net.txt");
+    net1.toFile("net1.txt");
 
     //cleanMemory();
 

@@ -10,6 +10,15 @@ Neuron::Neuron(int _x, int _y, int _z){
     printf("Neuron created\n");
 }
 
+Neuron::Neuron(int x, int y, int z, int r, double th, double po){
+    this->_x = x;
+    this->_y = y;
+    this->_z = z;
+    this->_radius = r;
+    this->_membraneThreshold = th;
+    this->_membranePotential = po;
+}
+
 //adds a neuron wich shoud receive signals from this neuron
 void Neuron::addNeighbor(Neuron* n, double w){
     _neighbors.push_back(n);
@@ -53,6 +62,12 @@ int Neuron::yPos(){
 
 int Neuron::zPos(){
     return _z;
+}
+
+void Neuron::setParameters(int radius, double threshold, double potential){
+    _radius = radius;
+    _membraneThreshold = threshold;
+    _membranePotential = potential;
 }
 
 //sends a signal to all connected neurons

@@ -20,6 +20,7 @@ public:
     int zPos();
     void propertiesToStream(std::ostream& out);
     void neighborsToStream(std::ostream& out);
+    void setParameters(int radius, double threshold, double potential);
 
 private:
     int _radius;

@@ -15,7 +15,6 @@ public:
     Network(int l, int h, int w);
     Network(const char* fname);
     void populate();
-    void populate(int* positions);
     void connectNeurons(Neuron* n);
     Neuron* getNeuron(int x, int y, int z);
     int getLength();
@@ -34,7 +33,9 @@ private:
     std::vector<std::vector<std::vector<Neuron>>> _neurons;
     int* extractNeurons();
     double* extractWeights();
-    void initFromFile(int* pos);
+    std::string readFromFile(const char* fname);
+    void addNeuron(int x, int y, int z, int radius, double threshold, double potential);
+    void populateWithDummies();
 
 };
 

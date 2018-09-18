@@ -9,22 +9,20 @@ Network::Network(int l, int h, int w){
 }
 
 Network::Network(const char* fname){
-    std::ifstream in(fname);
-    in.open(fname);
-
-    std::ostringstream oss;
-    oss << in.rdbuf();
-    in.close();
-
     std::string data;
-    data = oss.str();
+    data = readFromFile(fname);
 
     int state = 0;
+    int x, y, z, radius;
+    double weight, threshold, potential;
+    Neuron* posNeuron = nullptr;
+    Neuron* posNeighbor = nullptr;
 
     StringTokenizer tokenizer(data, "\n");
     while (tokenizer.hasMoreTokens()) {
-        StringTokenizer lineTokenizer(tokenizer.nextToken(), " ");
+        StringTokenizer lineTokenizer(tokenizer.nextToken(), " \n");
         std::string token = lineTokenizer.nextToken();
+        std::cout << "Token: " << token;
         if(token[0] == '#'){
             if(state == 4)
                 state--;
@@ -33,20 +31,43 @@ Network::Network(const char* fname){
             continue;
         }
 
+        std::cout << "State: " << state;
+
         switch(state){
         case 1:
+            std::cout << "Token: " << token;
             _length = std::stoi(token);
-            _height =std::stoi(lineTokenizer.nextToken());
+            _height = std::stoi(lineTokenizer.nextToken());
             _width = std::stoi(lineTokenizer.nextToken());
+            populateWithDummies();
             break;
         case 2:
-            //create neuron objects
+            //create neuron object
+            x = std::stoi(lineTokenizer.nextToken());
+            y = std::stoi(lineTokenizer.nextToken());
+            z = std::stoi(lineTokenizer.nextToken());
+            radius = std::stoi(lineTokenizer.nextToken());
+            threshold = std::stod(lineTokenizer.nextToken());
+            potential = std::stod(lineTokenizer.nextToken());
+            addNeuron(x, y, z, radius, threshold, potential);
             break;
         case 3:
             //get coordinates of neuron, wich gets its neighbors
+            x = std::stoi(lineTokenizer.nextToken());
+            y = std::stoi(lineTokenizer.nextToken());
+            z = std::stoi(lineTokenizer.nextToken());
+            posNeuron = getNeuron(x, y, z);
             break;
         case 4:
             //add neighbors
+            if(posNeuron != nullptr && posNeighbor != nullptr){
+                x = std::stoi(lineTokenizer.nextToken());
+                y = std::stoi(lineTokenizer.nextToken());
+                z = std::stoi(lineTokenizer.nextToken());
+                weight = std::stod(lineTokenizer.nextToken());
+                posNeighbor = getNeuron(x, y, z);
+                posNeuron->addNeighbor(posNeighbor, weight);
+            }
             break;
         }
     }
@@ -76,19 +97,17 @@ void Network::populate(){
     std::printf("\n-----net populated-----\n");
 }
 
-void Network::populate(int* positions){
+void Network::populateWithDummies(){
     for(int x = 0; x < _length; x++){
         _neurons.push_back(std::vector<std::vector<Neuron>>());
         for(int y = 0; y < _height; y++){
             _neurons[x].push_back(std::vector<Neuron>());
             for(int z = 0; z < _width; z++){
-                if(Network::isValidPos(x, y, z, positions)){
-                    _neurons[x][y].push_back(Neuron(x, y, z));
-                }
+                _neurons[x][y].push_back(Neuron(x, y, z, 0, 0.0, 0.0));
             }
         }
     }
-    std::printf("\n-----net populated-----\n");
+    //std::printf("\n-----net populated-----\n");
 }
 
 
@@ -191,4 +210,29 @@ int Network::getHeight(){
 
 int Network::getWidth(){
     return _width;
+}
+
+
+/*****************
+ *               *
+ *****************/
+
+std::string Network::readFromFile(const char* fname){
+    std::ifstream in(fname);
+    in.open(fname);
+
+    std::ostringstream oss;
+    oss << in.rdbuf();
+    in.close();
+
+    std::string data;
+    data = oss.str();
+
+    return data;
+}
+
+void Network::addNeuron(int x, int y, int z, int radius, double threshold, double potential){
+    if(isInBounds(x, y, z)){
+        _neurons[x][y][z].setParameters(radius, threshold, potential);
+    }
 }
