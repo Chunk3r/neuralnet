@@ -20,11 +20,11 @@ Network::Network(const char* fname){
 
     StringTokenizer tokenizer(data, "\n");
     while (tokenizer.hasMoreTokens()) {
-        StringTokenizer lineTokenizer(tokenizer.nextToken(), " \n");
+        StringTokenizer lineTokenizer(tokenizer.nextToken(), " ");
         std::string token = lineTokenizer.nextToken();
         std::cout << "Token: " << token;
         if(token[0] == '#'){
-            if(state == 4)
+            if(state == 3)
                 state--;
             else
                 state++;
@@ -34,16 +34,16 @@ Network::Network(const char* fname){
         std::cout << "State: " << state;
 
         switch(state){
-        case 1:
+        case 0:
             std::cout << "Token: " << token;
             _length = std::stoi(token);
             _height = std::stoi(lineTokenizer.nextToken());
             _width = std::stoi(lineTokenizer.nextToken());
             populateWithDummies();
             break;
-        case 2:
+        case 1:
             //create neuron object
-            x = std::stoi(lineTokenizer.nextToken());
+            x = std::stoi(token);
             y = std::stoi(lineTokenizer.nextToken());
             z = std::stoi(lineTokenizer.nextToken());
             radius = std::stoi(lineTokenizer.nextToken());
@@ -51,21 +51,21 @@ Network::Network(const char* fname){
             potential = std::stod(lineTokenizer.nextToken());
             addNeuron(x, y, z, radius, threshold, potential);
             break;
-        case 3:
+        case 2:
             //get coordinates of neuron, wich gets its neighbors
-            x = std::stoi(lineTokenizer.nextToken());
+            x = std::stoi(token);
             y = std::stoi(lineTokenizer.nextToken());
             z = std::stoi(lineTokenizer.nextToken());
             posNeuron = getNeuron(x, y, z);
             break;
-        case 4:
+        case 3:
             //add neighbors
+            x = std::stoi(token);
+            y = std::stoi(lineTokenizer.nextToken());
+            z = std::stoi(lineTokenizer.nextToken());
+            weight = std::stod(lineTokenizer.nextToken());
+            posNeighbor = getNeuron(x, y, z);
             if(posNeuron != nullptr && posNeighbor != nullptr){
-                x = std::stoi(lineTokenizer.nextToken());
-                y = std::stoi(lineTokenizer.nextToken());
-                z = std::stoi(lineTokenizer.nextToken());
-                weight = std::stod(lineTokenizer.nextToken());
-                posNeighbor = getNeuron(x, y, z);
                 posNeuron->addNeighbor(posNeighbor, weight);
             }
             break;

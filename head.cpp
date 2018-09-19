@@ -12,7 +12,6 @@ int main(){
     int width = 3;
 
     Network net(length, height, width);
-    net.populate();
 
     //TEST_AREA
     std::printf("net lenght:%i\n", net.getLength());
