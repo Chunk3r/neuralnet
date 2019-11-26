@@ -20,10 +20,11 @@ public:
   void populate(int* pos);
   void push_back(std::vector<std::vector<std::vector<Neuron>>>* vp, Neuron n);
   void connectNeurons(Neuron* n);
-  Neuron* getNeuron(int x, int y, int z);
+  Neuron* getNeuron(int x, int y, int z); //for debugging
   int getLength();
   int getHeight();
   int getWidth();
+  void input(std::vector<int> in);
   void save(char* posFileName, char* wFileName);
   void load(char* posFileName, char* wFileName);
   void save();//if no name is defined use default

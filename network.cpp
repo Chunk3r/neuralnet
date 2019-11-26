@@ -168,6 +168,18 @@ int Network::getWidth(){
   return width;
 }
 
+/*********************
+ *input              *
+ *********************/
+
+ void Network::input(std::vector<int, 3> in){
+   for(int i = 0; i < height; i++){
+     for(int j = 0; j < width; j++){
+       v[0][i][j]->addPotential(in[i][j])
+     }
+   }
+ }
+
 
 /*********************
  *save/load functions*
